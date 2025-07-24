@@ -39,11 +39,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+
                                 <NavLink
-                                    :href="route('')"
-                                    :active="route().current('')"
+                                    :href="route('leads.create')"
+                                    :active="route().current('leads.create')"
                                 >
-                                    Leads
+                                    Registrar Lead
                                 </NavLink>
                             </div>
                         </div>
