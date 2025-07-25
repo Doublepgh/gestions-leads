@@ -100,6 +100,12 @@ const updateOperador = async () => {
         Lista de Operadores
       </h2>
     </template>
+    <button
+      @click="() => router.visit(route('leads.create'))"
+      class="inline-block rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
+  >
+      Registrar Operador
+  </button>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

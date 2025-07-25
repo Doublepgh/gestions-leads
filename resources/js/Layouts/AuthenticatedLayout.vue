@@ -14,7 +14,7 @@ const showingNavigationDropdown = ref(false);
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav
-                class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800"
+                class="sticky top-0 z-50 border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800"
             >
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -39,14 +39,6 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
-
-                                <NavLink
-                                    :href="route('leads.create')"
-                                    :active="route().current('leads.create')"
-                                >
-                                    Registrar Lead
-                                </NavLink>
-
                                 <NavLink
                                     :href="route('operadores.index')"
                                     :active="route().current('operadores.index')"
@@ -204,7 +196,7 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="mt-16">
                 <slot />
             </main>
         </div>

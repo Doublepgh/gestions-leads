@@ -40,25 +40,21 @@ class OperadorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $operador)
-    {
-       try {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,' . $operador->id,
-            'username' => 'required|string|max:50|unique:users,username,' . $operador->id,
-            'activo' => 'required|boolean',
-        ]);
+    public function update(Request $request, $id)
+        {
+            $operador = User::findOrFail($id);
 
-        $operador->update($validated);
+            $validated = $request->validate([
+                'name' => 'required|string|max:100',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'username' => 'required|string|max:50|unique:users,username,' . $id,
+                'activo' => 'required|boolean',
+            ]);
 
-        return response()->json($operador, 200);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'errors' => $e->errors()
-        ], 422);
-    }
-    }
+            $operador->update($validated);
+
+            return response()->json($operador, 200);
+        }
 
     /**
      * Remove the specified resource from storage.
