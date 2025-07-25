@@ -46,6 +46,13 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Registrar Lead
                                 </NavLink>
+
+                                <NavLink
+                                    :href="route('operadores.index')"
+                                    :active="route().current('operadores.index')"
+                                >
+                                    Operadores
+                                </NavLink>
                             </div>
                         </div>
 
@@ -81,14 +88,14 @@ const showingNavigationDropdown = ref(false);
                                         <DropdownLink
                                             :href="route('profile.edit')"
                                         >
-                                            Profile
+                                            Perfil
                                         </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            Salir
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>

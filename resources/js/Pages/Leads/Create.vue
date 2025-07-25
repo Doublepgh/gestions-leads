@@ -1,51 +1,103 @@
 <template>
-  <form @submit.prevent="submit">
-    <div>
-      <label>Nombre</label>
-      <input v-model="form.nombre" type="text" required />
-    </div>
+  <div class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-6">
+    <h2 class="text-2xl font-semibold text-gray-700 text-center">Registro de Lead</h2>
 
-    <div>
-      <label>Correo</label>
-      <input v-model="form.correo" type="email" />
-    </div>
+    <form @submit.prevent="submit" class="space-y-4">
+      <!-- Nombre -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Nombre</label>
+        <input
+          v-model="form.nombre"
+          type="text"
+          required
+          class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+        />
+      </div>
 
-    <div>
-      <label>Teléfono</label>
-      <input v-model="form.telefono" type="text" />
-    </div>
+      <!-- Correo -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Correo</label>
+        <input
+          v-model="form.correo"
+          type="email"
+          class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+        />
+      </div>
 
-    <div>
-      <label>Empresa</label>
-      <input v-model="form.empresa" type="text" />
-    </div>
+      <!-- Teléfono -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Teléfono</label>
+        <input
+          v-model="form.telefono"
+          type="text"
+          class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+        />
+      </div>
 
-    <div>
-      <label>Interés</label>
-      <textarea v-model="form.interes"></textarea>
-    </div>
+      <!-- Empresa -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Empresa</label>
+        <input
+          v-model="form.empresa"
+          type="text"
+          class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+        />
+      </div>
 
-    <div>
-      <label>Tipo de asignación</label>
-      <select v-model="form.asignacion_tipo">
-        <option value="automatica">Automática</option>
-        <option value="manual">Manual</option>
-      </select>
-    </div>
+      <!-- Interés -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Interés</label>
+        <textarea
+          v-model="form.interes"
+          rows="3"
+          class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+        ></textarea>
+      </div>
 
-    <div v-if="form.asignacion_tipo === 'manual'">
-      <label>Asignar a operador</label>
-      <select v-model="form.operador_id">
-        <option v-for="operador in operadores" :key="operador.id" :value="operador.id">
-          {{ operador.nombre }}
-        </option>
-      </select>
-    </div>
+      <!-- Tipo de asignación -->
+      <div>
+        <label class="block text-sm font-medium text-gray-600 mb-1">Tipo de asignación</label>
+        <select
+          v-model="form.asignacion_tipo"
+          class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+        >
+          <option value="automatica">Automática</option>
+          <option value="manual">Manual</option>
+        </select>
+      </div>
 
-    <button type="submit">Guardar Lead</button>
-  </form>
-  <div v-if="successMessage" style="color: green; margin-top: 1rem;">
-    {{ successMessage }}
+      <!-- Operador (solo si es manual) -->
+      <div v-if="form.asignacion_tipo === 'manual'">
+        <label class="block text-sm font-medium text-gray-600 mb-1">Asignar a operador</label>
+        <select
+          v-model="form.operador_id"
+          class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+        >
+          <option
+            v-for="operador in operadores"
+            :key="operador.id"
+            :value="operador.id"
+          >
+            {{ operador.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Botón -->
+      <div class="text-center">
+        <button
+          type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl transition-all duration-200"
+        >
+          Guardar Lead
+        </button>
+      </div>
+    </form>
+
+    <!-- Mensaje de éxito -->
+    <div v-if="successMessage" class="text-green-600 text-center font-medium">
+      {{ successMessage }}
+    </div>
   </div>
 </template>
 
