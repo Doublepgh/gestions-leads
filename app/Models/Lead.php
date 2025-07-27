@@ -17,14 +17,9 @@ class Lead extends Model
         'empresa',
         'interes',
         'estatus',
-        'creado_por',
+        'operador_id',
     ];
     public $timestamps = false;
-
-    public function creador()
-    {
-        return $this->belongsTo(User::class, 'creado_por');
-    }
 
     public function asignado()
     {

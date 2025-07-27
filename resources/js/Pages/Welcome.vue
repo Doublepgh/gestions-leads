@@ -72,13 +72,13 @@ function handleImageError() {
                                 Iniciar sesión
                             </Link> -->
 
-                            <Link
+                            <!-- <Link
                                 v-if="canRegister"
                                 :href="route('register')"
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Registrar
-                            </Link>
+                            </Link> -->
                         </template>
                     </nav>
                 </header>
@@ -86,7 +86,7 @@ function handleImageError() {
                 <main class="mt-6">
                     <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                         <div class="bg-white rounded-lg p-8 shadow dark:bg-gray-800">
-                            <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Inicia sesión</h2>
+                            <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Iniciar sesión</h2>
                             <LoginForm />
                         </div>
 
@@ -100,7 +100,7 @@ function handleImageError() {
                 <footer
                     class="py-16 text-center text-sm text-black dark:text-white/70"
                 >
-                    Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
+                
                 </footer>
             </div>
         </div>

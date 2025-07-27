@@ -52,4 +52,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function esAutomatico()
+    {
+        return $this->modo_asignacion === 'automatico';
+    }
+
+    protected static function booted()
+{
+    static::created(function ($user) {
+        if (!$user->hasAnyRole()) {
+            $user->assignRole('operador');
+        }
+    });
+}
 }

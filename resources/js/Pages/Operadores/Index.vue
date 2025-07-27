@@ -22,6 +22,12 @@ const operadorEdit = ref({
   activo: true,
 });
 
+function cambiarModo(operador) {
+  router.put(route('usuarios.cambiarModo', operador.id), {
+    modo_asignacion: operador.modo_asignacion,
+  });
+}
+
 // =======================
 // Eliminar operador
 // =======================
@@ -101,11 +107,11 @@ const updateOperador = async () => {
       </h2>
     </template>
     <button
-      @click="() => router.visit(route('leads.create'))"
-      class="inline-block rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
-  >
-      Registrar Operador
-  </button>
+  @click="$inertia.visit(route('operadores.create'))"
+  class="inline-block rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer"
+>
+  Registrar Operador
+</button>
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -118,6 +124,7 @@ const updateOperador = async () => {
                 <th class="px-4 py-2 text-left">Correo</th>
                 <th class="px-4 py-2 text-left">Estatus</th>
                 <th class="px-4 py-2 text-left">Acciones</th>
+                <th class="px-4 py-2 text-left">Modo</th>
               </tr>
             </thead>
             <tbody>
@@ -125,6 +132,7 @@ const updateOperador = async () => {
                 <td class="px-4 py-2">{{ user.username }}</td>
                 <td class="px-4 py-2">{{ user.name }}</td>
                 <td class="px-4 py-2">{{ user.email }}</td>
+                
                 <td class="px-4 py-2">
                   <span :class="user.activo ? 'text-green-500' : 'text-red-500'">
                     {{ user.activo ? 'Activo' : 'Inactivo' }}
@@ -137,16 +145,24 @@ const updateOperador = async () => {
                       class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition duration-200"
                       title="Editar"
                     >
-                      ✏️
+                      Editar
+                      <Pencil class="inline-block w-4 h-4" />
                     </button>
                     <button
                       @click="confirmDelete(user)"
                       class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"
                       title="Eliminar"
                     >
-                      🗑️
+                      Eliminar
+                      <Trash2 class="inline-block w-4 h-4" />
                     </button>
                   </div>
+                </td>
+                <td>
+                  <select v-model="user.modo_asignacion" @change="cambiarModo(user)">
+                    <option value="manual">Manual</option>
+                    <option value="automatico">Automático</option>
+                  </select>
                 </td>
               </tr>
             </tbody>

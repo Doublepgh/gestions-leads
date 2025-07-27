@@ -26,9 +26,9 @@ class UserSeeder extends Seeder
         $user1 = User::find(2);
 
         if ($user1) {
-            $user1->assignRole($adminRole);
+                $user1->assignRole('admin', 'operador');
+            }
         }
-    }
 
 
 }

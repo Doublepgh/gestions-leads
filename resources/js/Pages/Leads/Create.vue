@@ -1,67 +1,3 @@
-<script setup>
-import { reactive, ref } from 'vue'
-import axios from 'axios'
-import { Head, Link } from '@inertiajs/vue3'
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-
-
-// URLs de la API
-const API_URL = "leads";
-
-defineProps({
-  operadores: Array
-})
-
-const form = reactive({
-  nombre: '',
-  correo: '',
-  telefono: '',
-  empresa: '',
-  interes: '',
-  asignacion_tipo: 'automatica',
-  operador_id: null
-})
-
-const errors = ref({})
-
-const submit = async () => {
-  try {
-    const payload = {
-      nombre: form.nombre,
-      correo: form.correo,
-      telefono: form.telefono,
-      empresa: form.empresa,
-      interes: form.interes,
-      estatus: 'abierto', // o déjalo que lo asigne el backend por defecto
-      creado_por: null, // se asignará desde el token en backend
-    }
-
-    // Asignación manual solo si corresponde
-    if (form.asignacion_tipo === 'manual' && form.operador_id) {
-      payload.operador_id = form.operador_id
-    }
-
-    await axios.post('/api/leads', payload).then(res => {
-        alert(res.data.message) // muestra mensaje
-        router.visit('/dashboard') // redirige al dashboard
-    })
-
-    successMessage.value = 'Lead guardado correctamente'
-    // limpia el formulario si deseas
-    setTimeout(() => {
-      window.location.href = '/dashboard'
-    }, 2000)
-  } catch (err) {
-    if (err.response && err.response.status === 422) {
-      errors.value = err.response.data.errors
-    } else {
-      console.error(err)
-      alert('Ocurrió un error al guardar el lead.')
-    }
-  }
-}
-</script>
-
 <template>
   <Head title="Leads" />
 
@@ -139,22 +75,33 @@ const submit = async () => {
           </select>
         </div>
 
-        <!-- Operador (solo si es manual) -->
-        <div v-if="form.asignacion_tipo === 'manual'">
-          <label class="block text-sm font-medium text-gray-600 mb-1">Asignar a operador</label>
-          <select
-            v-model="form.operador_id"
-            class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
-          >
-            <option
-              v-for="operador in operadores"
-              :key="operador.id"
-              :value="operador.id"
-            >
-              {{ operador.nombre }}
-            </option>
-          </select>
-        </div>
+        <!-- Campo de búsqueda -->
+<div v-if="form.asignacion_tipo === 'manual'" class="mb-2">
+  <input
+    v-model="search"
+    @input="fetchOperadores"
+    placeholder="Buscar operador por nombre..."
+    class="w-full border border-gray-300 p-2 rounded-lg"
+  />
+</div>
+
+<!-- Select de operadores -->
+<div v-if="form.asignacion_tipo === 'manual'">
+  <label class="block text-sm font-medium text-gray-600 mb-1">Asignar a operador</label>
+  <select
+    v-model="form.operador_id"
+    class="w-full border border-gray-300 p-2 rounded-lg focus:ring focus:ring-blue-300"
+  >
+    <option value="" disabled selected>Seleccione un operador</option>
+    <option
+      v-for="operador in operadores"
+      :key="operador.id"
+      :value="operador.id"
+    >
+      {{ operador.name }}
+    </option>
+  </select>
+</div>
 
         <!-- Botón -->
         <div class="text-center">
@@ -174,3 +121,79 @@ const submit = async () => {
     </div>
   </AuthenticatedLayout>
 </template>
+
+<script setup>
+import { Head, useForm } from '@inertiajs/vue3'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { reactive, ref, onMounted, watch } from 'vue'
+import axios from 'axios'
+import { router } from '@inertiajs/vue3'
+
+const form = reactive({
+  nombre: '',
+  correo: '',
+  telefono: '',
+  empresa: '',
+  interes: '',
+})
+
+const operadores = ref([])
+const search = ref('')
+const errors = ref({})
+const successMessage = ref('')
+
+// Llama cuando se escribe en el input
+const fetchOperadores = async () => {
+  try {
+    const response = await axios.get('/api/operadores', {
+      params: {
+        search: search.value,
+        modo: 'manual',
+      }
+    })
+    operadores.value = response.data
+  } catch (err) {
+    console.error('Error al buscar operadores:', err)
+  }
+
+  
+}
+
+// Al cargar por primera vez (si es manual), traer operadores
+watch(() => form.asignacion_tipo, (tipo) => {
+  if (tipo === 'manual') {
+    fetchOperadores()
+  }
+})
+
+const submit = async () => {
+  try {
+    const payload = {
+      nombre: form.nombre,
+      correo: form.correo,
+      telefono: form.telefono,
+      empresa: form.empresa,
+      interes: form.interes,
+    }
+
+    if (form.asignacion_tipo === 'manual' && form.operador_id) {
+      payload.operador_id = form.operador_id
+    }
+
+    await axios.post('/api/leads', payload)
+
+    successMessage.value = 'Lead guardado correctamente'
+
+    setTimeout(() => {
+      router.visit('/dashboard')
+    }, 2000)
+  } catch (err) {
+    if (err.response && err.response.status === 422) {
+      errors.value = err.response.data.errors
+    } else {
+      console.error(err)
+      alert('Ocurrió un error al guardar el lead.')
+    }
+  }
+}
+</script>
