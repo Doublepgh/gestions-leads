@@ -23,10 +23,10 @@ class UserSeeder extends Seeder
         $adminRole->givePermissionTo([$manageEverything, $manageLeads]);
         $operadorRole->givePermissionTo([$manageLeads]);
 
-        $user1 = User::find(2);
+        $user1 = User::find(14);
 
         if ($user1) {
-                $user1->assignRole('admin', 'operador');
+                $user1->assignRole(['admin', 'operador']);
             }
         }
 

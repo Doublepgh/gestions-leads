@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Inertia\Inertia;
-use PHPUnit\Framework\Constraint\Operator;
 
 class OperadorController extends Controller
 {
@@ -17,19 +16,17 @@ class OperadorController extends Controller
         $query = User::query()
         ->whereHas('roles', fn($q) => $q->where('name', 'operador'));
 
-    // Filtrar por modo_asignacion si se envía (opcional)
-    if ($request->has('modo')) {
-        $query->where('modo_asignacion', $request->modo);
-    }
+        if ($request->has('modo')) {
+            $query->where('modo_asignacion', $request->modo);
+        }
 
-    // Filtrar por nombre si se envía
-    if ($request->has('search')) {
-        $search = $request->search;
-        $query->where('name', 'like', "%$search%");
-    }
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('name', 'like', "%$search%");
+        }
 
-    $operadores = $query->get(['id', 'name']);
-    return response()->json($operadores);
+        $operadores = $query->get(['id', 'name']);
+        return response()->json($operadores);
     }
 
     /**
@@ -43,9 +40,13 @@ class OperadorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+         $operadores = User::role('operador')->get();
+
+        return Inertia::render('Operadores/Index', [
+            'operadores' => $operadores,
+        ]);
     }
 
     public function cambiarModo(Request $request, User $usuario)

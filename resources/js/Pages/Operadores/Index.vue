@@ -22,10 +22,15 @@ const operadorEdit = ref({
   activo: true,
 });
 
-function cambiarModo(operador) {
-  router.put(route('usuarios.cambiarModo', operador.id), {
-    modo_asignacion: operador.modo_asignacion,
-  });
+async function cambiarModo(operador) {
+  try {
+    await axios.put(`/api/operadores/${operador.id}/cambiar-modo`, {
+      modo_asignacion: operador.modo_asignacion,
+    });
+    alert('Modo cambiado');
+  } catch (error) {
+    console.error('Error al cambiar modo:', error);
+  }
 }
 
 // =======================
@@ -118,7 +123,7 @@ const updateOperador = async () => {
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
           <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
             <thead>
-              <tr>
+              <tr class="bg-gray-200">
                 <th class="px-4 py-2 text-left">Usuario</th>
                 <th class="px-4 py-2 text-left">Nombre</th>
                 <th class="px-4 py-2 text-left">Correo</th>

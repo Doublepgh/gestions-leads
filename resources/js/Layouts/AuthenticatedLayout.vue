@@ -5,9 +5,10 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage} from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+const roles = usePage().props.auth.roles;
 </script>
 
 <template>
@@ -34,17 +35,31 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    Leads
                                 </NavLink>
                                 <NavLink
-                                    :href="route('operadores.index')"
-                                    :active="route().current('operadores.index')"
+                                    v-if="roles.includes('admin')"
+                                    :href="route('operadores.show')"
+                                    :active="route().current('operadores.show')"
                                 >
                                     Operadores
                                 </NavLink>
+                                <NavLink
+                                    v-if="roles.includes('admin')"
+                                    :href="route('asignaciones.index')"
+                                    :active="route().current('asignaciones.index')"
+                                >
+                                    Asignaciones
+                                </NavLink>
+                                <!-- <NavLink
+                                    v-if="roles.includes('admin')"
+                                    :href="route('leads.index')"
+                                    :active="route().current('leads.index')"
+                                >
+                                    Gráficos
+                                </NavLink> -->
                             </div>
                         </div>
 

@@ -8,6 +8,8 @@ const props = defineProps({
     leads: Array
 })
 
+const leads = ref(props.leads)
+
 
 // Modal
 const showModal = ref(false)
@@ -89,19 +91,19 @@ function deleteLead(id) {
                                     <td class="px-4 py-2">{{ lead.empresa }}</td>
                                     <td class="px-4 py-2">{{ lead.estatus }}</td>
                                     <td class="px-4 py-2 space-x-2">
-  <button
-    @click="() => openEditModal(lead)"
-    class="rounded bg-yellow-400 px-3 py-1 text-sm font-medium text-white hover:bg-yellow-500"
-  >
-    Editar
-  </button>
-  <button
-    @click="() => deleteLead(lead.id)"
-    class="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
-  >
-    Eliminar
-  </button>
-</td>
+                                    <button
+                                        @click="() => openEditModal(lead)"
+                                        class="rounded bg-yellow-400 px-3 py-1 text-sm font-medium text-white hover:bg-yellow-500"
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        @click="() => deleteLead(lead.id)"
+                                        class="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
+                                    >
+                                        Eliminar
+                                    </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

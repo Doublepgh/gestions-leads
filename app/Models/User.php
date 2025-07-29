@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Asignacion;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,7 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'activo'
+        'activo',
+        'modo_asignacion',
     ];
 
     /**
@@ -59,11 +61,26 @@ class User extends Authenticatable
     }
 
     protected static function booted()
+    {
+        static::created(function ($user) {
+            if (!$user->hasAnyRole()) {
+                $user->assignRole('operador');
+            }
+        });
+    }
+
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignacion::class, 'operador_id');
+    }
+
+    public function leadsAsignados()
+    {
+        return $this->hasMany(Lead::class, 'operador_id');
+    }
+
+    public function operador()
 {
-    static::created(function ($user) {
-        if (!$user->hasAnyRole()) {
-            $user->assignRole('operador');
-        }
-    });
+    return $this->belongsTo(User::class, 'operador_id');
 }
 }
