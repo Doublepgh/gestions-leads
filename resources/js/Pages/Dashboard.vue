@@ -23,7 +23,7 @@ const editingLead = ref({
 })
 
 function openEditModal(lead) {
-  editingLead.value = { ...lead } // copia datos
+  editingLead.value = { ...lead }
   showModal.value = true
 }
 

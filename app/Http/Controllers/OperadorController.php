@@ -26,7 +26,10 @@ class OperadorController extends Controller
         }
 
         $operadores = $query->get(['id', 'name']);
-        return response()->json($operadores);
+        // return response()->json($operadores);
+        return Inertia::render('Operadores/Index', [
+            'operadores' => $operadores,
+        ]);
     }
 
     /**

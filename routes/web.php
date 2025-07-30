@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AsignacionController;
+use App\Http\Controllers\GraficaController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -33,23 +34,27 @@ Route::middleware('auth')->group(function () {
 Route::get('/leads/{lead}/edit', [LeadController::class, 'edit'])->name('leads.edit');
 Route::put('/leads/{lead}', [LeadController::class, 'update'])->name('leads.update');
 Route::delete('/leads/{lead}', [LeadController::class, 'destroy'])->name('leads.destroy');
-
 Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
-// Route::get('/operadores', [OperadorController::class, 'show'])->name('operadores.show');
 
 
-
+// Operadores
 Route::get('/operadores/create', function () {
     return Inertia::render('Operadores/Create');
 })->middleware('auth')->name('operadores.create');
-
-// Registrar operador (usar controlador existente)
 Route::post('/operadores', [RegisteredUserController::class, 'store'])
     ->name('operadores.store');
-
 Route::put('/operadores/{usuario}/modo', [OperadorController::class, 'cambiarModo'])->name('operadores.cambiarModo');
 Route::middleware(['auth', 'verified'])->get('/dashboard', [LeadController::class, 'index'])->name('dashboard');
+
+
+// Asignaciones
 Route::get('/asignaciones', function () {
     return Inertia::render('Asignaciones/Index');
 })->name('asignaciones.index');
+
+Route::get('/asignaciones/reporte', [App\Http\Controllers\AsignacionController::class, 'exportarPDF'])->name('asignaciones.pdf');
+
+//Gráficos
+Route::get('/graficas', [GraficaController::class, 'index'])->name('graficas.index');
+
 require __DIR__.'/auth.php';
